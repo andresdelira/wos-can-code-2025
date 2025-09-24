@@ -1,0 +1,36 @@
+@using Humanizer
+@model BlurbItemViewModel
+
+@{
+    var blurb = Model;
+}
+
+<div class="card shadow mb-3">
+    <div class="card-body">
+        <p class="lead card-text">
+            <a href="/posts/@blurb.Id">@blurb.Content</a>
+        </p>
+        <small class="text-muted">Posted by: @blurb.AuthorUsername (@blurb.CreatedAt.Humanize())</small>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-end align-items-center gap-2">
+            <span>@blurb.LikeCount likes</span>
+            @if (!blurb.LikedByMe)
+            {
+                <form asp-action="Like" asp-controller="Post" asp-route-id="@blurb.Id" method="POST">
+                    <button type="submit" class="btn btn-sm">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="UnLike" asp-controller="Post" asp-route-id="@blurb.Id" method="POST">
+                    <button type="submit" class="btn btn-sm">
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
