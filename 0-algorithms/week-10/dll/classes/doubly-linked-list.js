@@ -21,7 +21,8 @@ class DLLNode {
  * Doubly Linked List implementation.
  * @class
  */
-class DoublyLinkedList {
+class DoublyLinkedList 
+{
   /**
    * Creates an empty doubly linked list.
    */
@@ -94,8 +95,17 @@ class DoublyLinkedList {
    * @returns {void}
    * @complexity O(1)
    */
-  insertAtTail(val) {
-    throw new Error('Not implemented');
+  insertAtTail(val) 
+  {
+    const newNode = new DLLNode(val);
+    if (this.isEmpty()) {
+      this.head = this.tail = newNode;
+    } else {
+      newNode.prev = this.tail;
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.length++;
   }
 
   /**
@@ -104,7 +114,16 @@ class DoublyLinkedList {
    * @complexity O(1)
    */
   removeTail() {
-    throw new Error('Not implemented');
+    if (this.isEmpty()) return null;
+    const removedValue = this.tail.value;
+    if (this.head === this.tail) {
+      this.head = this.tail = null;
+    } else {
+      this.tail = this.tail.prev;
+      this.tail.next = null;
+    }
+    this.length--;
+    return removedValue;
   }
 
   /**
@@ -113,8 +132,20 @@ class DoublyLinkedList {
    * @returns {DLLNode|null} The found node, or null if not found.
    * @complexity O(n)
    */
-  find(val) {
-    throw new Error('Not implemented');
+  find(val) 
+  {
+    let runner = this.head;
+
+    while(runner)
+    {
+      if (val === runner.value)
+      {
+        return runner;
+      }
+      runner = runner.next;
+    }  
+
+    return null;
   }
 
   /**
@@ -130,6 +161,44 @@ class DoublyLinkedList {
       current = current.next;
     }
     return arr;
+  }
+  /**
+   * Inserts a new node with the given value before the specified node.
+   * @param {DLLNode} node - The node before which to insert.
+   * @param {any} val - The value to insert.
+   * @returns {void}
+   * @complexity O(1)
+   */
+  insertBefore(node, val) 
+  {
+    if (node === null) return
+
+    if (node === this.head)
+    {
+      this.insertAtHead(val);
+      return
+    }
+  
+    const newNode = new DLLNode(val);
+    node.prev.next = newNode;
+    newNode.prev = node.prev;
+    newNode.next = node;
+    node.prev = newNode;
+    this.length++;
+    
+  }
+
+  /**
+   * Inserts a new node with the given value after the specified node.
+   * @param {DLLNode} node - The node after which to insert.
+   * @param {any} val - The value to insert.
+   * @returns {void}
+   * @complexity O(1)
+   */
+  insertAfter(node, val) 
+  {
+    if (!node) return;
+    node.next ? this.insertBefore(node.next, val): this.insertAtTail(val);
   }
 }
 
